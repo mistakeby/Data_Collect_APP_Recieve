@@ -1,16 +1,20 @@
-Readme
+# Readme
+
+## 简介：
 
 Data_Collect_APP的配套后台接收端代码
 
 springboot+Servlet+FileUpload
 
-实现功能：
+## 实现功能：
 
 接收表单文字数据
 
 接收图片
 
 接收视频
+
+## 流程：
 
 图片和视频是按照指定规则存储在部署服务器上
 
