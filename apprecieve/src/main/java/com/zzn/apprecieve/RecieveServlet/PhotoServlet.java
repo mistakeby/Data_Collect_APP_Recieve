@@ -1,8 +1,11 @@
 package com.zzn.apprecieve.RecieveServlet;
 
+import com.zzn.apprecieve.pojo.Data;
+import com.zzn.apprecieve.service.ServerImpl;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,20 +19,21 @@ import java.util.List;
 @WebServlet("/photo")
 public class PhotoServlet extends HttpServlet {
     private String userid=null;
+    @Autowired
+    ServerImpl serverimpl;//=new ServerImpl();
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-        System.out.println("Get");
+        System.out.println("photo-Get");
     }
     @Override
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response) throws ServletException, IOException
     {
         request.setCharacterEncoding("utf-8");
-        System.out.println("Post");
+        System.out.println("photo-Post");
         if (ServletFileUpload.isMultipartContent(request)==true)
         {
-            System.out.println("Post2");
             DiskFileItemFactory factory = new DiskFileItemFactory();
             String path = "F:/TestData/"+userid+"/photo";
             File file=new File(path);//以后考虑是否要建立子目录，即是否要建立多级目录，
@@ -79,7 +83,6 @@ public class PhotoServlet extends HttpServlet {
         }
         else
         {
-            System.out.println("Post3");
             String[]  str1 = new String[20];
             String[] str2= new String[20];
             int i=0;
@@ -87,9 +90,23 @@ public class PhotoServlet extends HttpServlet {
             while (e.hasMoreElements()) {
                 str1[i] = (String) e.nextElement();
                 str2[i] = request.getParameter(str1[i]);
+                System.out.println(str1[i]+":"+str2[i]);
                 i++;
             }
             userid=str2[0];
+            Data data=new Data();
+            data.setUserid(str2[0]);
+            data.setType(str2[1]);
+            data.setLight(str2[2]);
+            data.setTopic(str2[3]);
+            data.setLatitude(str2[4]);
+            data.setCity(str2[5]);
+            data.setDistrict(str2[6]);
+            data.setSavepath(str2[7]);
+            data.setOriginaltime(str2[8]);
+            data.setDescprition(str2[9]);
+
+            serverimpl.saveData(data);
         }
     }
 }
